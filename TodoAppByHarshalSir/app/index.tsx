@@ -1,17 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Text } from "@react-navigation/elements";
+
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import {
+  FlatList,
   KeyboardAvoidingView,
-  SafeAreaViewBase,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import {
-  FlatList,
-  View,
-} from "react-native-reanimated/lib/typescript/Animated";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type TodoType = {
   id: number;
@@ -73,13 +72,14 @@ export default function Index() {
       isDone: false,
     };
 
-    //***call create todo backend api
-    //const tasks = await axios.post('/todos', newTodo);
+    //***call add todo backend api
+    //const res = await axios.post('/todos', newTodo);
 
-    //setTodos(tasks)
+    //setTodos(res.data)
+    setInput("");
   };
 
-  //mark done
+  //Update todo(mark done)
   // const markAsDone = async () => {
   //   await axios.put("/todos/:id");
 
@@ -93,7 +93,7 @@ export default function Index() {
   // };
 
   return (
-    <SafeAreaViewBase
+    <SafeAreaView
       style={{
         flex: 1,
         justifyContent: "center",
@@ -119,8 +119,8 @@ export default function Index() {
         style={{
           backgroundColor: "#fff",
           padding: 16,
-          borderRadius: "10",
-          gap: "10",
+          borderRadius: 10,
+          gap: 10,
         }}
       >
         <Ionicons name="search" size={24} color={"#333"} />
@@ -131,7 +131,7 @@ export default function Index() {
       </View>
 
       <FlatList
-        data={todos.reverse()}
+        data={[...todos].reverse()}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View
@@ -151,7 +151,7 @@ export default function Index() {
                 style={{
                   fontSize: 16,
                   color: "#333",
-                  textDecorationColor: item.isDone ? "line-through" : "none",
+                  textDecorationLine: item.isDone ? "line-through" : "none",
                 }}
               >
                 {item.title}
@@ -181,6 +181,7 @@ export default function Index() {
         behavior={"padding"}
         style={{
           display: "flex",
+          flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -213,6 +214,6 @@ export default function Index() {
           <Ionicons name="add" size={32} color={"#fff"} />
         </TouchableOpacity>
       </KeyboardAvoidingView>
-    </SafeAreaViewBase>
+    </SafeAreaView>
   );
 }
